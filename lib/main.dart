@@ -33,10 +33,14 @@ class _JankenPageState extends State<JankenPage> {
   String myHand = '🖐️';
   String computerHand = '✊';
 
+  /// 勝敗を保持する変数
+  String result = '勝負！';
+
 // 選択した手をログ出力し、表示する関数
   void selecthand(String selectedhand) {
     myHand = selectedhand;
     generateComputerHand();
+    judge();
     setState(() {});
   }
 
@@ -60,6 +64,19 @@ class _JankenPageState extends State<JankenPage> {
     }
   }
 
+  void judge() {
+    // ここで勝敗を判定し、結果を result に代入する
+    if (myHand == computerHand) {
+      result = '引き分け';
+    } else if ((myHand == '✊' && computerHand == '✌️') ||
+        (myHand == '✌️' && computerHand == '🖐️') ||
+        (myHand == '🖐️' && computerHand == '✊')) {
+      result = '勝ち';
+    } else {
+      result = '負け';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,6 +85,14 @@ class _JankenPageState extends State<JankenPage> {
           child: Column(
         mainAxisAlignment: MainAxisAlignment.center, // 中央揃えにしたい
         children: [
+          /// 勝敗を表示されるための Text
+          Text(
+            result,
+            style: TextStyle(
+              fontSize: 32,
+            ),
+          ),
+          SizedBox(height: 48),
           Text(
             computerHand,
             style: TextStyle(
