@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 void main() {
@@ -29,11 +31,33 @@ class JankenPage extends StatefulWidget {
 
 class _JankenPageState extends State<JankenPage> {
   String myHand = '🖐️';
+  String computerHand = '✊';
 
+// 選択した手をログ出力し、表示する関数
   void selecthand(String selectedhand) {
     myHand = selectedhand;
-    print(myHand);
+    generateComputerHand();
     setState(() {});
+  }
+
+// ランダムな数字を出力する関数
+  void generateComputerHand() {
+    final randomNumber = Random().nextInt(3);
+    computerHand = randomNumberToHand(randomNumber);
+  }
+
+//ランダムな数字を受け取って手を出す関数
+  String randomNumberToHand(int randomNumber) {
+    switch (randomNumber) {
+      case 0:
+        return '✊';
+      case 1:
+        return '✌️';
+      case 2:
+        return '🖐️';
+      default: // 上で書いてきた以外の値が入ってきたら。
+        return '✊'; // ✊を返す。（0, 1, 2 以外が入ることはないが念のため）
+    }
   }
 
   @override
@@ -44,6 +68,13 @@ class _JankenPageState extends State<JankenPage> {
           child: Column(
         mainAxisAlignment: MainAxisAlignment.center, // 中央揃えにしたい
         children: [
+          Text(
+            computerHand,
+            style: TextStyle(
+              fontSize: 60, // 文字サイズを大きくしたい
+            ),
+          ),
+          SizedBox(height: 124), // 隙間をあけたい
           Text(
             myHand,
             style: TextStyle(
